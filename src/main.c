@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "stm32f10x.h"
 #include "czujniki.h"
+#include "silniki.h"
 
 void send_char(char c)
 {
@@ -17,8 +18,6 @@ int __io_putchar(int c)
 	 return c;
 }
 
-
-
 int main(void)
 {
 	 GPIO_InitTypeDef gpio;
@@ -27,11 +26,6 @@ int main(void)
 	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
 	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	 RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-
-	 RCC_ADCCLKConfig(RCC_PCLK2_Div6);
-	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-
-
 
 	 GPIO_StructInit(&gpio);
 	 gpio.GPIO_Pin = GPIO_Pin_2;
@@ -47,8 +41,8 @@ int main(void)
 	 USART_Init(USART2, &uart);
 	 USART_Cmd(USART2, ENABLE);
 
-
 	 adcInit();
+	 motorsInit();
 
 	 while (1)
 	 {

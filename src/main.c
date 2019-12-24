@@ -48,7 +48,7 @@ int main(void)
 	 while (1)
 	 {
 		 adcCalculateValue(&prawo, &lewo);
-		 printf("ADC4 = %d    ADC5 = %d\r\n", lewo, prawo);
+		 printf("Sterowanie Lewo = %d    Sterowanie Prawo = %d\r\n", lewo, prawo);
 		 motorsStart(prawo, lewo);
 	 }
 }

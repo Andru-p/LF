@@ -50,8 +50,12 @@ void adcCalculateValue(int *prawo, int *lewo)
 			//printf("Adc%d = %d    ", i + 1, adcValues[i]);
 		}
 	//printf("\r\n");
-	*prawo = adcValues[3];
-	*lewo = adcValues[4];
+
+	int sredniaPrawo = adcValues[3] + 1.6*adcValues[2] + 2*adcValues[1] + 3*adcValues[0]; //1+1.6 +  2 + 3 = 7.6
+	int sredniaLewo = adcValues[4] + 1.6*adcValues[5] + 2*adcValues[6] + 3*adcValues[7];
+
+	*prawo = sredniaPrawo;
+	*lewo = sredniaLewo;
 }
 
 

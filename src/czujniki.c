@@ -35,11 +35,10 @@ void adcDisplayValues()
 	printf("\n");
 }
 
-int calculateValue(double *prawo, double *lewo)
+void adcCalculateValue(int *prawo, int *lewo)
 {
 
-	int adcValues[8];
-	//adc1, adc2, adc3, adc4, adc5, adc6, adc7, adc8;
+	int adcValues[8];   //adc1, adc2, adc3, adc4, adc5, adc6, adc7, adc8;
 
 	uint8_t piny[8] = { ADC_Channel_8 , ADC_Channel_9 , ADC_Channel_10,
 								ADC_Channel_11, ADC_Channel_12, ADC_Channel_13,
@@ -48,10 +47,13 @@ int calculateValue(double *prawo, double *lewo)
 	for(unsigned char i=0;i<8;i++)
 		{
 			adcValues[i] = adcRead(piny[i]);
-			printf("Adc%d = %d    ", i + 1, adcValues[i+1]);
+			//printf("Adc%d = %d    ", i + 1, adcValues[i]);
 		}
-	return 0;
+	//printf("\r\n");
+	*prawo = adcValues[3];
+	*lewo = adcValues[4];
 }
+
 
 void adcInit()
 {

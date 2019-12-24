@@ -43,9 +43,12 @@ int main(void)
 
 	 adcInit();
 	 motorsInit();
-
+	 int prawo;
+	 int lewo;
 	 while (1)
 	 {
-		 adcDisplayValues();
+		 adcCalculateValue(&prawo, &lewo);
+		 printf("ADC4 = %d    ADC5 = %d\r\n", lewo, prawo);
+		 motorsStart(prawo, lewo);
 	 }
 }

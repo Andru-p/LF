@@ -15,7 +15,6 @@ void motorsInit()
 {
  GPIO_InitTypeDef gpio;
  TIM_TimeBaseInitTypeDef tim;
- TIM_OCInitTypeDef  channel;
 
  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
@@ -28,20 +27,22 @@ void motorsInit()
 
  TIM_TimeBaseStructInit(&tim);
  tim.TIM_CounterMode = TIM_CounterMode_Up;
- tim.TIM_Prescaler = 10256;
- tim.TIM_Period = 1000;
+ tim.TIM_Prescaler = 128;
+ tim.TIM_Period = 4095;
  TIM_TimeBaseInit(TIM3, &tim);
 
- TIM_OCStructInit(&channel);
- channel.TIM_OCMode = TIM_OCMode_PWM1;
- channel.TIM_OutputState = TIM_OutputState_Enable;
- channel.TIM_Pulse = 200;
- TIM_OC3Init(TIM3, &channel);
- channel.TIM_Pulse = 50;
- TIM_OC4Init(TIM3, &channel);
-
  TIM_Cmd(TIM3, ENABLE);
-
-
 }
 
+void motorsStart(int prawo, int lewo)
+{
+	 TIM_OCInitTypeDef  channel;
+
+	 TIM_OCStructInit(&channel);
+	 channel.TIM_OCMode = TIM_OCMode_PWM1;
+	 channel.TIM_OutputState = TIM_OutputState_Enable;
+	 channel.TIM_Pulse = prawo;
+	 TIM_OC3Init(TIM3, &channel);
+	 channel.TIM_Pulse = lewo;
+	 TIM_OC4Init(TIM3, &channel);
+}

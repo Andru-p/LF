@@ -50,14 +50,16 @@ int calculateValue(double *prawo, double *lewo)
 			adcValues[i] = adcRead(piny[i]);
 			printf("Adc%d = %d    ", i + 1, adcValues[i+1]);
 		}
-
-
+	return 0;
 }
 
 void adcInit()
 {
 	 GPIO_InitTypeDef gpio;
 	 ADC_InitTypeDef adc;
+
+	 RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 
 	 GPIO_StructInit(&gpio);
 	 gpio.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;

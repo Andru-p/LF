@@ -9,5 +9,6 @@
 #define SILNIKI_H_
 
 void motorsInit();
+void motorsStart();
 
 #endif /* SILNIKI_H_ */

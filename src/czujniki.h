@@ -11,5 +11,6 @@
 int adc_read(int channel);
 void adcDisplayValues();
 void adcInit();
+void adcCalculateValue();
 
 #endif /* CZUJNIKI_H_ */

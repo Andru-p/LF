@@ -3,6 +3,8 @@
 #include "stm32f10x.h"
 #include "czujniki.h"
 #include "silniki.h"
+#include "przyciski.h"
+
 
 void send_char(char c)
 {
@@ -16,6 +18,25 @@ int __io_putchar(int c)
 	 send_char('\r');
 	 send_char(c);
 	 return c;
+}
+
+void EXTI15_10_IRQHandler()
+{
+ if (EXTI_GetITStatus(EXTI_Line13))
+ {
+
+	 if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13) == 1 && GPIO_ReadOutputDataBit(GPIOD, GPIO_Pin_2) == 0)
+	 {
+			 GPIO_SetBits(GPIOD, GPIO_Pin_2);
+	 }
+	 else if(GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13) == 1 && GPIO_ReadOutputDataBit(GPIOD, GPIO_Pin_2) == 1)
+	 {
+			 GPIO_ResetBits(GPIOD, GPIO_Pin_2);
+	 }
+
+
+ EXTI_ClearITPendingBit(EXTI_Line13);
+ }
 }
 
 int main(void)
@@ -41,8 +62,10 @@ int main(void)
 	 USART_Init(USART2, &uart);
 	 USART_Cmd(USART2, ENABLE);
 
+
 	 adcInit();
 	 motorsInit();
+	 buttonInit();
 	 int prawo;
 	 int lewo;
 	 while (1)

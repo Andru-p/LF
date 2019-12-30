@@ -28,7 +28,7 @@ void motorsInit()
  TIM_TimeBaseStructInit(&tim);
  tim.TIM_CounterMode = TIM_CounterMode_Up;
  tim.TIM_Prescaler = 1;
- tim.TIM_Period = 4095*15; //7.6 to suma wag czujnikow
+ tim.TIM_Period = 4095*15; //7.6 to suma wag czujnikow -- max wartosc to 31122
  TIM_TimeBaseInit(TIM3, &tim);
 
  TIM_Cmd(TIM3, ENABLE);

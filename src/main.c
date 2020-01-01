@@ -46,7 +46,10 @@ int main(void)
 
 	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
 	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	 RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
 	 RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+
+	 //UART 2 konfiguracja
 
 	 GPIO_StructInit(&gpio);
 	 gpio.GPIO_Pin = GPIO_Pin_2;
@@ -63,13 +66,34 @@ int main(void)
 	 USART_Cmd(USART2, ENABLE);
 
 
+
+
+
 	 adcInit();
 	 motorsInit();
 	 buttonInit();
+	 bluetoothInit();
+
 	 int prawo;
 	 int lewo;
 	 while (1)
 	 {
+		 if (USART_GetFlagStatus(USART3, USART_FLAG_RXNE)) // zdalne zalaczanie mostka przez bluetooth wersja podstawowa do zmodyfikowania
+		 {
+			 char c = USART_ReceiveData(USART3);
+			 if (c != 0)
+			 {
+				 GPIO_SetBits(GPIOD, GPIO_Pin_2);
+				 printf("START \r\n");
+			 }
+			 else
+			 {
+				 GPIO_ResetBits(GPIOD, GPIO_Pin_2);
+				 printf("STOP \r\n");
+			 }
+
+
+		 }
 		 adcCalculateValue(&prawo, &lewo);
 		 printf("Sterowanie Lewo = %d    Sterowanie Prawo = %d\r\n", lewo, prawo);
 		 motorsStart(prawo, lewo);

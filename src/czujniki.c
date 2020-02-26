@@ -41,28 +41,51 @@ void adcCalculateValue(int *prawo, int *lewo)
 	int sredniaLewo = 0;
 	int adcValues[8];   //adc1, adc2, adc3, adc4, adc5, adc6, adc7, adc8;
 
+
 	uint8_t piny[8] = { ADC_Channel_8 , ADC_Channel_9 , ADC_Channel_10,
 								ADC_Channel_11, ADC_Channel_12, ADC_Channel_13,
 								ADC_Channel_14, ADC_Channel_15 };
 
-	uint8_t wagi[8] = {4, 3, 2, 1, 1, 2, 3 ,4};
+	int wagi[8] = {0, 0, 4, 1, 1, 4, 0, 0};
+	//int wagi[8] = {5, 3, 2, 1, 1, 2, 3, 5};
+	int progi[8] = {500, 500, 400, 400, 300, 300, 300, 300};
 
-	for(unsigned char i=0;i<4;i++)
+//	for(unsigned char i=0;i<4;i++)
+//	{
+//		adcValues[i] = 4095 - adcRead(piny[i]);
+//		printf("Adc%d = %d    ", i + 1, adcValues[i]);
+//		sredniaPrawo += adcValues[i] * wagi[i];
+//	}
+//	for(unsigned char i = 4; i < 8; i++)
+//	{
+//		adcValues[i] = 4095 - adcRead(piny[i]);
+//		printf("Adc%d = %d    ", i + 1, adcValues[i]);
+//		sredniaLewo += adcValues[i] * wagi[i];
+//	}
+//	printf("\r\n");
+
+	for(unsigned char i = 0 ; i < 4 ; i++)
 	{
 		adcValues[i] = 4095 - adcRead(piny[i]);
+		if(adcValues[i] < progi[i])
+			adcValues[i] = 0;
+		else
+			adcValues[i] = 1;
 		//printf("Adc%d = %d    ", i + 1, adcValues[i]);
 		sredniaPrawo += adcValues[i] * wagi[i];
 	}
-	for(unsigned char i = 4; i < 8; i++)
+	for(unsigned char i = 4 ; i < 8 ; i++)
 	{
 		adcValues[i] = 4095 - adcRead(piny[i]);
+		if(adcValues[i] < progi[i])
+			adcValues[i] = 0;
+		else
+			adcValues[i] = 1;
 		//printf("Adc%d = %d    ", i + 1, adcValues[i]);
 		sredniaLewo += adcValues[i] * wagi[i];
 	}
 	//printf("\r\n");
 
-	//int sredniaPrawo = adcValues[3] + 1.6*adcValues[2] + 2*adcValues[1] + 3*adcValues[0]; //1+1.6 +  2 + 3 = 7.6
-	//int sredniaLewo = adcValues[4] + 1.6*adcValues[5] + 2*adcValues[6] + 3*adcValues[7];
 
 	*prawo = sredniaPrawo;
 	*lewo = sredniaLewo;

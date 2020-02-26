@@ -4,7 +4,8 @@
 #include "czujniki.h"
 #include "silniki.h"
 #include "przyciski.h"
-
+#define PREDKOSC_MIN 6000
+#define PREDKOSC_MAX 15000
 
 void send_char(char c)
 {
@@ -76,6 +77,7 @@ int main(void)
 
 	 int prawo;
 	 int lewo;
+
 	 while (1)
 	 {
 		 if (USART_GetFlagStatus(USART3, USART_FLAG_RXNE)) // zdalne zalaczanie mostka przez bluetooth wersja podstawowa do zmodyfikowania
@@ -95,7 +97,19 @@ int main(void)
 
 		 }
 		 adcCalculateValue(&prawo, &lewo);
-		 printf("Sterowanie Lewo = %d    Sterowanie Prawo = %d\r\n", lewo, prawo);
+		 //if(lewo == 11 && prawo == 11)
+		 if(lewo == 5 && prawo == 5)
+		 {
+			 GPIO_ResetBits(GPIOD, GPIO_Pin_2);
+			 printf("STOP poza linia \r\n");
+		 }
+
+		 lewo *= 2244;
+		 //lewo *= 1020;
+		 prawo *= 2200;
+		 //prawo *= 1000;
+		 //printf("Sterowanie Lewo = %d    Sterowanie Prawo = %d     ", lewo, prawo);
+
 		 motorsStart(prawo, lewo);
 	 }
 }
